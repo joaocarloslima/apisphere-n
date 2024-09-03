@@ -16,9 +16,8 @@ public class SecurityConfig {
     public SecurityFilterChain config(HttpSecurity http, AuthorizationFilter authorizationFilter) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                //.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                .requestMatchers(HttpMethod.GET, "/posts").authenticated()
+                .anyRequest().authenticated()
         );
         http.csrf(csrf -> csrf.disable());
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
