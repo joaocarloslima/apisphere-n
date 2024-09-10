@@ -4,6 +4,7 @@ import br.com.fiap.apisphere.user.dto.UserProfileResponse;
 import br.com.fiap.apisphere.user.dto.UserRequest;
 import br.com.fiap.apisphere.user.dto.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,11 @@ public class UserController {
     public void uploadAvatar(@RequestBody MultipartFile file){
         var email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         service.uploadAvatar(email, file);
+    }
+
+    @GetMapping("avatar/{filename}")
+    public ResponseEntity<Resource> getAvatar(@PathVariable String filename){
+        return service.getAvatar(filename);
     }
 
 }
