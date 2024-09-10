@@ -4,6 +4,7 @@ import br.com.fiap.apisphere.user.User;
 import br.com.fiap.apisphere.user.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,11 @@ import java.time.ZoneOffset;
 public class TokenService {
 
     private final UserRepository userRepository;
-    Algorithm algorithm = Algorithm.HMAC256("assinatura");
+    private Algorithm algorithm;
 
-    public TokenService(UserRepository userRepository) {
+    public TokenService(UserRepository userRepository, @Value("${jwt.secret}") String secret) {
         this.userRepository = userRepository;
+        this.algorithm = Algorithm.HMAC256(secret);
     }
 
     public Token create(Credentials credentials) {
