@@ -27,8 +27,8 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public List<User> findAll(){
-        return repository.findAll();
+    public List<User> findByName(String name){
+        return repository.findByNameContainingIgnoreCase(name);
     }
 
     public User create(User user){
