@@ -1,5 +1,6 @@
 package br.com.fiap.apisphere.user;
 
+import br.com.fiap.apisphere.mail.MailService;
 import br.com.fiap.apisphere.user.dto.UserProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -26,6 +27,8 @@ public class UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    private MailService mailService;
 
     public List<User> findByName(String name){
         return repository.findByNameContainingIgnoreCase(name);
@@ -36,6 +39,7 @@ public class UserService {
                 passwordEncoder.encode(user.getPassword())
         );
         user.setAvatar("https://avatar.iran.liara.run/username?username=" + user.getName());
+        mailService.sendWelcomeMail(user);
         return repository.save(user);
     }
 
